@@ -4,7 +4,9 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
   password:
-  socket: /tmp/mysql.sock development:
+  socket: /tmp/mysql.sock
+
+development:
   <<: *default
   database: binance_bot_development
 
@@ -18,6 +20,6 @@ production:
   username: binance_bot
   password: <%= ENV['BINANCE_BOT_DATABASE_PASSWORD'] %>
 
-heroku:
+production:
   <<: *default
-  url: <%= ENV["MYSQL_URL"] %>
+  url: <%= ENV['MYSQL_URL'] %>
