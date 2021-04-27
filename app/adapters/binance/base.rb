@@ -23,6 +23,16 @@ module Binance
       end
 
       def get
+        response = client.get(endpoint, @params) do |req|
+          req.headers['X-MBX-APIKEY'] = ENV['BINANCE_API_KEY']
+        end
+
+        byebug
+        raise ApiCallError unless response.success?
+        yield JSON.parse(response.body)
+      end
+
+      def get_without_header
         response = client.get(endpoint, @params)
 
         raise ApiCallError unless response.success?

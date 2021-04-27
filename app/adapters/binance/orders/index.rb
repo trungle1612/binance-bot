@@ -21,7 +21,7 @@ module Binance
         end
       end
 
-      def endpoind
+      def endpoint
         @endpoind ||= '/api/v3/allOrders'
       end
 
