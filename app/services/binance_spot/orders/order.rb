@@ -2,9 +2,10 @@ require 'openssl'
 
 module BinanceOrders
   class Order
-    attr_reader :timestamp
+    attr_reader :timestamp, :symbol
 
-    def initialize
+    def initialize symbol
+      @symbol    = symbol
       @timestamp = Time.now.utc.strftime("%s%3N")
     end
 
@@ -18,13 +19,9 @@ module BinanceOrders
       puts "#{order.symbol.to_s.red}---------#{order.price.to_s.red}---------#{order.side}"
     end
 
-    def server_time
-      Binance::ServerTime.new.process
-    end
-
     def params
       {
-        symbol: 'DOGEUSDT',
+        symbol: @symbol,
         recvWindow: 5000,
         timestamp: @timestamp
       }

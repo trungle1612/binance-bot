@@ -23,8 +23,8 @@ module Binance
         req.headers['Content-Type'] = "application/json; charset=utf-8"
       end
 
-      byebug
       raise ApiCallError unless response.success?
+      puts JSON.parse(response.body)
       yield JSON.parse(response.body)
     end
 
