@@ -22,7 +22,7 @@ module Binance
       end
 
       def endpoint
-        @endpoind ||= '/api/v3/allOrders'
+        @endpoind ||= '/api/v3/openOrders'
       end
 
       def result

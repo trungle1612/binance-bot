@@ -1,7 +1,7 @@
 require 'openssl'
 
 module BinanceOrders
-  class Index
+  class Open
     attr_reader :timestamp
 
     def initialize
@@ -9,19 +9,19 @@ module BinanceOrders
     end
 
     def call!
-      Binance::Orders::Index.new(params.merge(signature: signature)).process
+      orders = Binance::Orders::Open.new(
+        params: params,
+        security_type: 'USER_DATA'
+      ).process
+
+      puts "symbol------------PRICE---------ORDER"
+      orders.each do |order|
+        puts "#{order.symbol.to_s.red}---------#{order.price.to_s.red}---------#{order.side}"
+      end
     end
 
     def server_time
       Binance::ServerTime.new.process
-    end
-
-    def signature
-      secret       = ENV['BINANCE_API_SECRET_KEY']
-      digest = OpenSSL::Digest::SHA256.new
-
-      payload = params.map {|key, value| "#{key}=#{value}"}.join('&')
-      OpenSSL::HMAC.hexdigest(digest, secret, payload)
     end
 
     def params
@@ -29,6 +29,9 @@ module BinanceOrders
         recvWindow: 5000,
         timestamp: @timestamp
       }
+    end
+
+    def display
     end
   end
 end
